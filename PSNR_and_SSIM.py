@@ -1,15 +1,13 @@
 import numpy as np
 import nibabel as nib
 from skimage.metrics import mean_squared_error, peak_signal_noise_ratio, structural_similarity
-from skimage.util import random_noise
 import pydicom
 import matplotlib.pyplot as plt
-from scipy import ndimage
-from skimage import exposure
+from rician_noise_injection import add_rician_noise  # Import the new function
 
 def PSNR_and_SSIM(path1, path2, mu=1, sigma=0.1, plot=True):
     """
-    Computes PSNR and SSIM between two images in .nii or .dcm format after adding Rician noise to the first image.
+    Computes PSNR and SSIM between two images in .nii or .dcm format.
     Args:
         path1 (str): Path to the first image (.nii or .dcm)
         path2 (str): Path to the second image (.nii or .dcm)
@@ -41,18 +39,8 @@ def PSNR_and_SSIM(path1, path2, mu=1, sigma=0.1, plot=True):
     else:
         pass
 
-    # Apply Fourier transform to img1_norm
-    img1_fft = np.fft.fft2(img1_norm)
-    img1_fft_shifted = np.fft.fftshift(img1_fft)
-
-    # Add Rician noise in the frequency domain
-    real_noise = np.random.normal(mu, sigma, img1_fft_shifted.shape)
-    imag_noise = np.random.normal(mu, sigma, img1_fft_shifted.shape)
-    noisy_fft = img1_fft_shifted + (real_noise + 1j * imag_noise)
-
-    # Inverse Fourier transform to get back to image domain
-    img1_noisy = np.abs(np.fft.ifft2(np.fft.ifftshift(noisy_fft)))
-
+    # Add Rician noise using the imported function
+    img1_noisy = add_rician_noise(img1_norm, mu, sigma)
 
     # Normalize the noisy image
     img1_norm = (img1_noisy - np.min(img1_noisy)) / (np.max(img1_noisy) - np.min(img1_noisy))
@@ -85,11 +73,9 @@ def PSNR_and_SSIM(path1, path2, mu=1, sigma=0.1, plot=True):
     return mse, psnr, ssim
 
 
-
 # Paths to your .nii files
 file1 = 'Data/Synthetic LR/LR_000.nii'
 file2 = 'dynamic_acqstn_example.dcm'
 
 # Call the function
-PSNR_and_SSIM(file1, file2, mu=1, sigma=0.2, plot=True)
-
+PSNR_and_SSIM(file1, file2, mu=1, sigma=0.1, plot=True)
