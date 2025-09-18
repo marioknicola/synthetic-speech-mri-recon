@@ -5,7 +5,7 @@ import nibabel as nib
 import matplotlib.pyplot as plt
 
 # Path to DICOM folder
-dicom_dir = ""
+dicom_dir = "Data"
 
 # Load DICOM files in the directory
 dicom_files = [os.path.join(dicom_dir, f) for f in os.listdir(dicom_dir) if f.endswith('.dcm')]

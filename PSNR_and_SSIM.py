@@ -87,8 +87,8 @@ def PSNR_and_SSIM(path1, path2, mu=1, sigma=0.1, plot=True):
 
 
 # Paths to your .nii files
-file1 = '/Users/marioknicola/Documents/MATLAB/Speech data to play with/512x512/Synthetic LR/LR_000.nii'
-file2 = '/Users/marioknicola/Desktop/Subject0027/aaah_Fast_SPGR_29_by_23cm_2p3mm_10fps_asset_3_11/IM-0008-0060.dcm'
+file1 = 'Data/Synthetic LR/LR_000.nii'
+file2 = 'dynamic_acqstn_example.dcm'
 
 # Call the function
 PSNR_and_SSIM(file1, file2, mu=1, sigma=0.2, plot=True)
