@@ -33,9 +33,14 @@ def PSNR_and_SSIM(path1, path2, mu=1, sigma=0.1, plot=True):
     img1_norm = (img1 - np.min(img1)) / (np.max(img1) - np.min(img1))
     img2_norm = (img2 - np.min(img2)) / (np.max(img2) - np.min(img2))
 
-    # flip img1 horizontally and rotate 90 degrees counter-clockwise
+    # flip images horizontally and rotate 90 degrees counter-clockwise if NiftIs
     if path1.endswith('.nii'):
         img1_norm = np.fliplr(np.rot90(img1_norm, k=-1))
+    else:
+        pass
+
+    if path2.endswith('.nii'):
+        img2_norm = np.fliplr(np.rot90(img2_norm, k=-1))
     else:
         pass
 
