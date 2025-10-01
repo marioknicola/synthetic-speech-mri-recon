@@ -13,10 +13,10 @@ mask = data > 30
 
 # Generate smooth noise field
 np.random.seed(0)  # reproducibility
-raw_noise = np.random.normal(0, 0.5, size=data.shape)
+raw_noise = np.random.normal(0, 0.1, size=data.shape)
 
 # Smooth it to make clumpy/patchy noise
-smooth_noise = gaussian_filter(raw_noise, sigma=4)  # larger sigma = smoother patches
+smooth_noise = gaussian_filter(raw_noise, sigma=3)  # larger sigma = smoother patches
 
 # Normalise noise
 smooth_noise = smooth_noise / np.std(smooth_noise)
@@ -28,6 +28,9 @@ clumpy_noise = sigma * smooth_noise
 # Add noise only where mask is True
 noisy_data = data.copy()
 noisy_data[mask] += clumpy_noise[mask]
+
+# set values lower than 0.01 to 0
+noisy_data[noisy_data < 0.01] = 0
 
 # show original and noisy images
 import matplotlib.pyplot as plt
